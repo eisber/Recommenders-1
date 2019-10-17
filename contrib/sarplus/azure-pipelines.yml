@@ -71,7 +71,6 @@ jobs:
       sparkversion=$(spark.version) sbt test
     displayName: 'scala test'
 
-
   - task: PublishTestResults@2
     inputs:
       testResultsFiles: '**/test-results.xml'
@@ -89,5 +88,25 @@ jobs:
       versionSpec: '3.x'
       architecture: 'x64'
 
-  - script: cd contrib/sarplus/python && python setup.py sdist
-    displayName: 'Build sdist'
+  - script: |
+      cd contrib/sarplus/python
+      python setup.py sdist
+    displayName: 'Build pip distribution package'
+
+  - task: PublishBuildArtifacts@1
+    inputs: 
+      pathtoPublish: contrib/sarplus/python/dist/*.tar.gz
+      artifactName: 'PIP $(python.version)'
+    displayName: 'PIP artifact'
+
+  - script: |
+      cd contrib/sarplus/scala
+      sparkversion=$(spark.version) sbt spPublish
+    continueOnError: true
+    displayName: 'Build scala package'
+
+  - task: PublishBuildArtifacts@1
+    inputs: 
+      pathtoPublish: contrib/sarplus/scala/target/*.tar.gz
+      artifactName: 'Spark $(spark.version)'
+    displayName: 'Spark/Scala artifact'
