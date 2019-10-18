@@ -96,7 +96,7 @@ jobs:
   - task: PublishBuildArtifacts@1
     inputs: 
       pathtoPublish: contrib/sarplus/python/dist/pysarplus-0.2.6.tar.gz
-      artifactName: 'PIP 3.6'
+      artifactName: 'python_sdist_py3.6'
     displayName: 'PIP artifact'
 
 - job: 'PublishScala'
