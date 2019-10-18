@@ -77,15 +77,14 @@ jobs:
       testRunTitle: 'Python $(python.version)'
     condition: succeededOrFailed()
 
-- job: 'Publish'
-  dependsOn: 'Test'
+- job: 'PublishPython'
   pool:
     vmImage: 'Ubuntu 16.04'
 
   steps:
   - task: UsePythonVersion@0
     inputs:
-      versionSpec: '3.x'
+      versionSpec: '3.6'
       architecture: 'x64'
 
   - script: |
@@ -97,9 +96,23 @@ jobs:
   - task: PublishBuildArtifacts@1
     inputs: 
       pathtoPublish: contrib/sarplus/python/dist/pysarplus-0.2.6.tar.gz
-      artifactName: 'PIP $(python.version)'
+      artifactName: 'PIP 3.6'
     displayName: 'PIP artifact'
 
+- job: 'PublishScala'
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  strategy:
+    matrix:
+      Spark2.3:
+        spark.version: '2.3.0'
+      Spark2.4.1:
+        spark.version: '2.4.1'
+      Spark2.4.3:
+        spark.version: '2.4.3'
+    maxParallel: 4
+
+  steps:
   - script: |
       cd contrib/sarplus/scala
       sparkversion=$(spark.version) sbt spPublish
@@ -110,4 +123,4 @@ jobs:
     inputs: 
       pathtoPublish: contrib/sarplus/scala/target/sarplus-0.2.6.zip
       artifactName: 'Spark $(spark.version)'
-    displayName: 'Spark/Scala artifact'
+    displayName: 'Spark/Scala artifact $(spark.version)'
