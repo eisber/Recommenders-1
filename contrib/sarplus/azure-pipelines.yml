@@ -91,11 +91,12 @@ jobs:
   - script: |
       cd contrib/sarplus/python
       python setup.py sdist
+      find .
     displayName: 'Build pip distribution package'
 
   - task: PublishBuildArtifacts@1
     inputs: 
-      pathtoPublish: contrib/sarplus/python/dist/*.tar.gz
+      pathtoPublish: contrib/sarplus/python/dist/pysarplus-0.2.6.tar.gz
       artifactName: 'PIP $(python.version)'
     displayName: 'PIP artifact'
 
@@ -107,6 +108,6 @@ jobs:
 
   - task: PublishBuildArtifacts@1
     inputs: 
-      pathtoPublish: contrib/sarplus/scala/target/*.tar.gz
+      pathtoPublish: contrib/sarplus/scala/target/sarplus-0.2.6.zip
       artifactName: 'Spark $(spark.version)'
     displayName: 'Spark/Scala artifact'
