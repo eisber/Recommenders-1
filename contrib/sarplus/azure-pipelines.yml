@@ -87,17 +87,11 @@ jobs:
       versionSpec: '3.6'
       architecture: 'x64'
 
-  - script: |
-      cd contrib/sarplus/python
-      python setup.py sdist
-      find .
-    displayName: 'Build pip distribution package'
-
   - task: PublishBuildArtifacts@1
     inputs: 
-      pathtoPublish: contrib/sarplus/python/dist/pysarplus-0.2.6.tar.gz
-      artifactName: 'python_sdist_py3.6'
-    displayName: 'PIP artifact'
+      pathtoPublish: contrib/sarplus/python
+      artifactName: 'python_3.6'
+    displayName: 'Python artifact'
 
 - job: 'PublishScala'
   pool:
