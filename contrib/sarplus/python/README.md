@@ -1,0 +1,1 @@
+sarplus is an implementation of the SAR algorithm optimized for large datasets.
